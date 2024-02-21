@@ -52,30 +52,37 @@
             width: 40px;
             height: auto;
             margin-right: 10px;
+            vertical-align: middle; /* Alinha a imagem verticalmente com o texto */
         }
         main {
-            padding-top: 70px;
+            padding-top: 90px; /* Ajusta o espaço para o conteúdo para compensar a altura do menu */
             text-align: center;
             margin-bottom: 100px; /* espaço para o rodapé não sobrepor conteúdo */
         }
         section {
-            padding: 40px 20px;
+            padding: 20px; /* Adiciona espaçamento interno */
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             text-align: left;
-			width: 90%;
+            max-width: 800px; /* Define uma largura máxima para as seções */
+            margin: 0 auto; /* Centraliza as seções horizontalmente */
+        }
+        section + section {
+            border-top: 1px solid #ccc; /* Adiciona uma linha superior para separar as seções */
         }
         footer {
             background-color: #343a40; /* azul escuro */
             color: #fff;
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0; /* Reduzido o padding */
             position: fixed;
             bottom: 0;
             width: 100%;
             font-family: 'Roboto', sans-serif;
+            z-index: 1000; /* Garante que o footer esteja sobre o conteúdo */
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra na parte superior para separar do conteúdo */
         }
         footer p {
             margin: 5px 0;
@@ -87,13 +94,12 @@
                 flex-direction: column;
                 align-items: center; /* Alinha itens ao centro */
             }
-            .right-section {
-                justify-content: center; /* Justifica itens ao centro */
-                margin-top: 10px; /* Adiciona um espaço entre as seções */
-            }
             nav a {
                 padding: 10px 20px;
                 display: inline-block;
+            }
+            main {
+                padding-top: 150px; /* Ajusta o espaço para o conteúdo para compensar a altura do menu no modo responsivo */
             }
         }
     </style>
@@ -102,15 +108,15 @@
     <header>
         <nav>
             <div class="left-section">
-                <a href="https://arthurstiebler.github.io/index.html">
+                <a href="/index.html">
                     <img src="https://images.squarespace-cdn.com/content/v1/63f76b05d0c2765a049595bf/23175920-7a6f-4931-a171-627ee11af30b/usa_farm_labor_monocolor.png?format=1500w" alt="Logo">
                     USA Farm Labor
                 </a>
             </div>
             <div class="right-section">
-                <a href="usa_farm_labor.html">USA Farm Labor</a>
-                <a href="visto_h2a.html">Visto H2A</a>
-                <a href="visto_h2b.html">Visto H2B</a>
+                <a href="/usa_farm_labor.html">USA Farm Labor</a>
+                <a href="/visto_h2a.html">Visto H2A</a>
+                <a href="/visto_h2b.html">Visto H2B</a>
             </div>
         </nav>
     </header>
@@ -124,24 +130,11 @@
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at justo vel nulla feugiat eleifend ut eu nunc. Morbi id interdum magna. Fusce in purus et nunc malesuada elementum. Pellentesque ut diam auctor, malesuada ipsum id, tempus lectus. Aliquam nec purus a urna aliquam feugiat. Nulla auctor orci ut nibh commodo pharetra. Mauris ut viverra lectus. Donec ut sapien ut dolor malesuada hendrerit nec sit amet nisl. Curabitur vestibulum odio vitae arcu fringilla, nec vehicula tellus bibendum.</p>
             <p>Nulla facilisi. Maecenas vel pulvinar nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed id risus dui. Fusce ut nunc vel odio lobortis lacinia vel eu ligula. Proin finibus lacus sit amet tristique consectetur. Vivamus sit amet tincidunt lorem, eget convallis felis. Donec lacinia convallis mauris ac pellentesque. Donec eu tellus non mauris scelerisque vehicula. Vivamus non dui tellus. Duis tincidunt eleifend ex, vel feugiat leo ultrices non.</p>
             <p>Nulla facilisi. Vestibulum et purus consectetur, ultricies magna nec, dignissim risus. Donec scelerisque, arcu at ultricies placerat, risus turpis consequat nisi, nec commodo lectus turpis id tortor. Cras vitae turpis eget felis malesuada rutrum ac et nisi. Pellentesque feugiat erat sed est ultricies rhoncus. Ut a sollicitudin velit. Suspendisse potenti. Phasellus bibendum et urna eget auctor.</p>
-		</section>
+        </section>
     </main>
     <footer>
         <p>Contato: email@example.com | Telefone: (123) 456-7890</p>
-        <p>Mapa do site: <a href="#us_farm_labor" style="color: white">US Farm Labor</a> | <a href="#visto_h2a" style="color: white">Visto H2A</a> | <a href="#visto_h2b" style="color: white">Visto H2B</a></p>
+        <p>Mapa do site: <a href="#us_farm_labor">US Farm Labor</a> | <a href="#visto_h2a">Visto H2A</a> | <a href="#visto_h2b">Visto H2B</a></p>
     </footer>
-
-    <script>
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                window.scrollTo({
-                    top: target.offsetTop,
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
