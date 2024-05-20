@@ -3,7 +3,7 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>AI Test</title>
+      <title>AI Test v0.1</title>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
    </head>
    <body>
@@ -35,8 +35,7 @@
              maxPredictions = model.getTotalClasses();
          
              // Convenience function to setup a webcam
-             const flip = false; // whether to flip the webcam
-             webcam = new tmImage.Webcam(400, 400, flip); // width, height, flip
+             webcam = new tmImage.Webcam(400, 400); // width, height
              await webcam.setup(); // request access to the webcam
              await webcam.play();
              window.requestAnimationFrame(loop);
