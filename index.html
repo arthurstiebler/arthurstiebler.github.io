@@ -1,71 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>AI Test v0.4</title>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-   </head>
-   <body>
-      <div>Teachable Machine Image Model</div>
-      <button type="button" onclick="init()">Start</button>
-      <button type="button" id="change-camera-button" onclick="changeCamera()">Change camera</button>
-      <div id="webcam-container"></div>
-      <div id="label-container"></div>
-      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-      <script type="text/javascript">
-         const URL = "https://teachablemachine.withgoogle.com/models/uF451AfLS/";
-         let model, webcam, labelContainer, maxPredictions;
-         let useFrontCamera = true;
-
-         async function init() {
-             const modelURL = URL + "model.json";
-             const metadataURL = URL + "metadata.json";
-
-             model = await tmImage.load(modelURL, metadataURL);
-             maxPredictions = model.getTotalClasses();
-
-             await setupWebcam();
-
-             window.requestAnimationFrame(loop);
-             labelContainer = document.getElementById("label-container");
-             for (let i = 0; i < maxPredictions; i++) {
-                 labelContainer.appendChild(document.createElement("div"));
-             }
-         }
-
-         async function setupWebcam() {
-             const flip = true;
-             if (webcam) {
-                 await webcam.stop();
-                 document.getElementById("webcam-container").removeChild(webcam.canvas);
-             }
-             const facingMode = useFrontCamera ? "user" : "environment";
-             webcam = new tmImage.Webcam(400, 400, flip, facingMode);
-             await webcam.setup();
-             await webcam.play();
-             document.getElementById("webcam-container").appendChild(webcam.canvas);
-         }
-
-         async function loop() {
-             webcam.update();
-             await predict();
-             window.requestAnimationFrame(loop);
-         }
-
-         async function predict() {
-             const prediction = await model.predict(webcam.canvas);
-             for (let i = 0; i < maxPredictions; i++) {
-                 const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                 labelContainer.childNodes[i].innerHTML = classPrediction;
-             }
-         }
-
-         async function changeCamera() {
-             useFrontCamera = !useFrontCamera;
-             await setupWebcam();
-         }
-      </script>
-   </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Test v0.5</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+</head>
+<body>
+    <div>Teachable Machine Image Model</div>
+    <button type="button" onclick="init()">Start</button>
+    <button type="button" onclick="changeCamera()">Change Camera</button>
+    <div id="webcam-container"></div>
+    <div id="label-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="text/javascript">
+        // More API functions here:
+        // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+        
+        // the link to your model provided by Teachable Machine export panel
+        const URL = "https://teachablemachine.withgoogle.com/models/uF451AfLS/";
+        
+        let model, webcam, labelContainer, maxPredictions;
+        let currentCameraIndex = 0;
+        let flip = true;
+        let cameras = [];
+        
+        // Load the image model and setup the webcam
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+        
+            // load the model and metadata
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+        
+            // Get the list of available video devices (cameras)
+            cameras = await navigator.mediaDevices.enumerateDevices();
+            cameras = cameras.filter(device => device.kind === 'videoinput');
+            
+            // Setup the initial webcam
+            await setupWebcam();
+        
+            // append elements to the DOM
+            document.getElementById("webcam-container").appendChild(webcam.canvas);
+            labelContainer = document.getElementById("label-container");
+            for (let i = 0; i < maxPredictions; i++) { // and class labels
+                labelContainer.appendChild(document.createElement("div"));
+            }
+        }
+        
+        async function setupWebcam() {
+            if (webcam) {
+                webcam.stop();
+                webcam.canvas.remove();
+            }
+            const facingMode = currentCameraIndex % 2 === 0 ? 'user' : 'environment';
+            webcam = new tmImage.Webcam(400, 400, flip, facingMode); // width, height, flip, facingMode
+            await webcam.setup({deviceId: {exact: cameras[currentCameraIndex].deviceId}}); // request access to the specific camera
+            await webcam.play();
+            window.requestAnimationFrame(loop);
+        }
+        
+        async function loop() {
+            webcam.update(); // update the webcam frame
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+        
+        async function predict() {
+            // predict can take in an image, video or canvas html element
+            const prediction = await model.predict(webcam.canvas);
+            for (let i = 0; i < maxPredictions; i++) {
+                const classPrediction =
+                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                labelContainer.childNodes[i].innerHTML = classPrediction;
+            }
+        }
+        
+        async function changeCamera() {
+            currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
+            flip = !flip; // Toggle flip
+            await setupWebcam();
+        }
+    </script>
+</body>
 </html>
