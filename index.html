@@ -36,7 +36,7 @@
          
              // Convenience function to setup a webcam
              const flip = true; // whether to flip the webcam
-             webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+             webcam = new tmImage.Webcam(400, 400); // width, height, flip
              await webcam.setup(); // request access to the webcam
              await webcam.play();
              window.requestAnimationFrame(loop);
@@ -65,67 +65,6 @@
                  labelContainer.childNodes[i].innerHTML = classPrediction;
              }
          }
-      </script>
-      <script>
-         var capture;
-         let switchFlag = false;
-         let switchBtn;
-         
-         var options = {
-              video: {
-                 
-                  facingMode: {
-                   exact: "user"
-                 }
-              }
-            };
-         
-         function setup() {
-           createCanvas(390, 240);
-           
-           capture = createCapture(options);
-           
-           switchBtn = createButton('Switch Camera');
-           switchBtn.position(19, 19);
-           switchBtn.mousePressed(switchCamera);
-           
-           
-         
-         }
-         
-         function switchCamera()
-         {
-           switchFlag = !switchFlag;
-           if(switchFlag==true)
-           {
-            capture.remove();
-            options = {
-              video: {
-                 
-                  facingMode: {
-                   exact: "environment"
-                 }
-              }
-            };
-         
-           }
-           else
-           {
-            capture.remove();
-            options = {
-              video: {
-                 
-                  facingMode: {
-                   exact: "user"
-                 }
-              }
-            };
-             
-           }
-           capture = createCapture(options);
-           
-         }
-         		
       </script>
    </body>
 </html>
