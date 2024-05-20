@@ -1,231 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seasonal Workers Brazil</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        header {
-            background-color: #375091; /* azul */
-            color: #fff;
-            padding: 15px 0;
-            text-align: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        nav {
-            display: flex;
-            justify-content: space-between; /* Alinha itens ao longo do eixo principal, distribuindo o espaço sobrando entre os itens */
-            align-items: center; /* Alinha itens ao longo do eixo transversal */
-            padding: 0 20px; /* Adiciona um pouco de espaço entre os itens */
-        }
-        .left-section {
-            display: flex; /* Usa flexbox para os itens da seção esquerda */
-            align-items: center; /* Alinha itens ao longo do eixo transversal */
-        }
-        .right-section {
-            display: flex; /* Usa flexbox para os itens da seção direita */
-            align-items: center; /* Alinha itens ao longo do eixo transversal */
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        nav a:hover {
-            background-color: #c82333; /* vermelho mais escuro */
-            color: #fff;
-        }
-        nav img {
-            width: 40px;
-            height: auto;
-            margin-right: 10px;
-            vertical-align: middle; /* Alinha a imagem verticalmente com o texto */
-        }
-        main {
-            padding-top: 90px; /* Ajusta o espaço para o conteúdo para compensar a altura do menu */
-            text-align: center;
-            margin-bottom: 100px; /* espaço para o rodapé não sobrepor conteúdo */
-        }
-        section {
-            padding: 20px; /* Adiciona espaçamento interno */
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            text-align: left;
-            max-width: 800px; /* Define uma largura máxima para as seções */
-            margin: 0 auto; /* Centraliza as seções horizontalmente */
-        }
-        section + section {
-            border-top: 1px solid #ccc; /* Adiciona uma linha superior para separar as seções */
-        }
-		section img {
-            max-width: 100%; /* Define a largura máxima para as imagens */
-            height: auto; /* Mantém a proporção da imagem */
-        }
-        footer {
-            background-color: #343a40; /* azul escuro */
-            color: #fff;
-            text-align: center;
-            padding: 10px 0; /* Reduzido o padding */
-            /* position: fixed; */
-            bottom: 0;
-            width: 100%;
-            font-family: 'Roboto', sans-serif;
-			font-size: 12px;
-            /* z-index: 1000; /* Garante que o footer esteja sobre o conteúdo */ */
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra na parte superior para separar do conteúdo */
-        }
-        footer p {
-            margin: 5px 0;
-        }
-
-        /* Consulta de mídia para telas menores */
-        @media only screen and (max-width: 600px) {
-            nav {
-                flex-direction: column;
-                align-items: center; /* Alinha itens ao centro */
-            }
-            nav a {
-                padding: 10px 20px;
-                display: inline-block;
-            }
-            main {
-                padding-top: 150px; /* Ajusta o espaço para o conteúdo para compensar a altura do menu no modo responsivo */
-            }
-        }
-    </style>
-</head>
-<body>
-	<div>Teachable Machine Image Model</div>
-<button type="button" onclick="init()">Start</button>
-<div id="webcam-container"></div>
-<div id="label-container"></div>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-<script type="text/javascript">
-    // More API functions here:
-    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
-
-    // the link to your model provided by Teachable Machine export panel
-    const URL = "https://teachablemachine.withgoogle.com/models/uF451AfLS/";
-
-    let model, webcam, labelContainer, maxPredictions;
-
-    // Load the image model and setup the webcam
-    async function init() {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
-
-        // load the model and metadata
-        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-        // or files from your local hard drive
-        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-
-        // Convenience function to setup a webcam
-        const flip = true; // whether to flip the webcam
-        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-        await webcam.setup(); // request access to the webcam
-        await webcam.play();
-        window.requestAnimationFrame(loop);
-
-        // append elements to the DOM
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
-        labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < maxPredictions; i++) { // and class labels
-            labelContainer.appendChild(document.createElement("div"));
-        }
-    }
-
-    async function loop() {
-        webcam.update(); // update the webcam frame
-        await predict();
-        window.requestAnimationFrame(loop);
-    }
-
-    // run the webcam image through the image model
-    async function predict() {
-        // predict can take in an image, video or canvas html element
-        const prediction = await model.predict(webcam.canvas);
-        for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction =
-                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
-        }
-    }
-</script>
-var capture;
-let switchFlag = false;
-let switchBtn;
-
-var options = {
-     video: {
-        
-         facingMode: {
-          exact: "user"
-        }
-     }
-   };
-
-function setup() {
-  createCanvas(390, 240);
-  
-  capture = createCapture(options);
-  
-  switchBtn = createButton('Switch Camera');
-  switchBtn.position(19, 19);
-  switchBtn.mousePressed(switchCamera);
-  
-  
-
-}
-
-function switchCamera()
-{
-  switchFlag = !switchFlag;
-  if(switchFlag==true)
-  {
-   capture.remove();
-   options = {
-     video: {
-        
-         facingMode: {
-          exact: "environment"
-        }
-     }
-   };
-
-  }
-  else
-  {
-   capture.remove();
-   options = {
-     video: {
-        
-         facingMode: {
-          exact: "user"
-        }
-     }
-   };
-    
-  }
-  capture = createCapture(options);
-  
-}
-</body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>AI Test</title>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+   </head>
+   <body>
+      <div>Teachable Machine Image Model</div>
+      <button type="button" onclick="init()">Start</button>
+      <div id="webcam-container"></div>
+      <div id="label-container"></div>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+      <script type="text/javascript">
+         // More API functions here:
+         // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+         
+         // the link to your model provided by Teachable Machine export panel
+         const URL = "https://teachablemachine.withgoogle.com/models/uF451AfLS/";
+         
+         let model, webcam, labelContainer, maxPredictions;
+         
+         // Load the image model and setup the webcam
+         async function init() {
+             const modelURL = URL + "model.json";
+             const metadataURL = URL + "metadata.json";
+         
+             // load the model and metadata
+             // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+             // or files from your local hard drive
+             // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+             model = await tmImage.load(modelURL, metadataURL);
+             maxPredictions = model.getTotalClasses();
+         
+             // Convenience function to setup a webcam
+             const flip = true; // whether to flip the webcam
+             webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+             await webcam.setup(); // request access to the webcam
+             await webcam.play();
+             window.requestAnimationFrame(loop);
+         
+             // append elements to the DOM
+             document.getElementById("webcam-container").appendChild(webcam.canvas);
+             labelContainer = document.getElementById("label-container");
+             for (let i = 0; i < maxPredictions; i++) { // and class labels
+                 labelContainer.appendChild(document.createElement("div"));
+             }
+         }
+         
+         async function loop() {
+             webcam.update(); // update the webcam frame
+             await predict();
+             window.requestAnimationFrame(loop);
+         }
+         
+         // run the webcam image through the image model
+         async function predict() {
+             // predict can take in an image, video or canvas html element
+             const prediction = await model.predict(webcam.canvas);
+             for (let i = 0; i < maxPredictions; i++) {
+                 const classPrediction =
+                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                 labelContainer.childNodes[i].innerHTML = classPrediction;
+             }
+         }
+      </script>
+      <script>
+         var capture;
+         let switchFlag = false;
+         let switchBtn;
+         
+         var options = {
+              video: {
+                 
+                  facingMode: {
+                   exact: "user"
+                 }
+              }
+            };
+         
+         function setup() {
+           createCanvas(390, 240);
+           
+           capture = createCapture(options);
+           
+           switchBtn = createButton('Switch Camera');
+           switchBtn.position(19, 19);
+           switchBtn.mousePressed(switchCamera);
+           
+           
+         
+         }
+         
+         function switchCamera()
+         {
+           switchFlag = !switchFlag;
+           if(switchFlag==true)
+           {
+            capture.remove();
+            options = {
+              video: {
+                 
+                  facingMode: {
+                   exact: "environment"
+                 }
+              }
+            };
+         
+           }
+           else
+           {
+            capture.remove();
+            options = {
+              video: {
+                 
+                  facingMode: {
+                   exact: "user"
+                 }
+              }
+            };
+             
+           }
+           capture = createCapture(options);
+           
+         }
+         		
+      </script>
+   </body>
 </html>
