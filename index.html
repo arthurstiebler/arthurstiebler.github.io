@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Test v0.2</title>
+    <title>AI Test v0.3</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 </head>
 <body>
     <div>Teachable Machine Image Model</div>
     <button type="button" onclick="init()">Start</button>
     <button type="button" onclick="toggleCamera()">Toggle Camera</button>
+    <button type="button" onclick="toggleFlip()">Toggle Flip</button>
     <div id="webcam-container"></div>
     <div id="label-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -18,6 +19,7 @@
         const URL = "https://teachablemachine.withgoogle.com/models/uF451AfLS/";
         let model, webcam, labelContainer, maxPredictions;
         let currentCamera = 'user'; // 'user' for front camera, 'environment' for back camera
+        let flipCamera = true; // Default to true for front camera flip
 
         async function init() {
             const modelURL = URL + "model.json";
@@ -26,16 +28,16 @@
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
 
-            await setupWebcam(currentCamera);
+            await setupWebcam(currentCamera, flipCamera);
             window.requestAnimationFrame(loop);
         }
 
-        async function setupWebcam(facingMode) {
+        async function setupWebcam(facingMode, flip) {
             if (webcam) {
                 webcam.stop();
             }
 
-            webcam = new tmImage.Webcam(400, 400, true); // width, height, flip (for front camera)
+            webcam = new tmImage.Webcam(400, 400, flip); // width, height, flip
             await webcam.setup({ facingMode }); // request access to the webcam
             await webcam.play();
 
@@ -64,6 +66,11 @@
 
         function toggleCamera() {
             currentCamera = (currentCamera === 'user') ? 'environment' : 'user';
+            init();
+        }
+
+        function toggleFlip() {
+            flipCamera = !flipCamera;
             init();
         }
     </script>
