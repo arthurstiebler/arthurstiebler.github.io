@@ -110,37 +110,65 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="left-section">
-                <a href="index.html">
-                    <img src="icon.png" alt="Logo">
-                    Seasonal Workers Brazil
-                </a>
-            </div>
-            <div class="right-section">
-                <a href="usa_farm_labor.html">USA Farm Labor</a>
-                <a href="visto_h2a.html">Visto H2A</a>
-                <a href="visto_h2b.html">Visto H2B</a>
-            </div>
-        </nav>
-    </header>
-    <main>
-        <section id="us_farm_labor">
-			<img src="https://www.heitec.com/fileadmin/bilder/unternehmen/header/welcome_jobs.png" alt="Imagem Genérica">
-            <h1>Welcome</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at justo vel nulla feugiat eleifend ut eu nunc. Morbi id interdum magna. Fusce in purus et nunc malesuada elementum. Pellentesque ut diam auctor, malesuada ipsum id, tempus lectus. Aliquam nec purus a urna aliquam feugiat. Nulla auctor orci ut nibh commodo pharetra. Mauris ut viverra lectus. Donec ut sapien ut dolor malesuada hendrerit nec sit amet nisl. Curabitur vestibulum odio vitae arcu fringilla, nec vehicula tellus bibendum.</p>
-            <p>Nulla facilisi. Maecenas vel pulvinar nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed id risus dui. Fusce ut nunc vel odio lobortis lacinia vel eu ligula. Proin finibus lacus sit amet tristique consectetur. Vivamus sit amet tincidunt lorem, eget convallis felis. Donec lacinia convallis mauris ac pellentesque. Donec eu tellus non mauris scelerisque vehicula. Vivamus non dui tellus. Duis tincidunt eleifend ex, vel feugiat leo ultrices non.</p>
-            <p>Nulla facilisi. Vestibulum et purus consectetur, ultricies magna nec, dignissim risus. Donec scelerisque, arcu at ultricies placerat, risus turpis consequat nisi, nec commodo lectus turpis id tortor. Cras vitae turpis eget felis malesuada rutrum ac et nisi. Pellentesque feugiat erat sed est ultricies rhoncus. Ut a sollicitudin velit. Suspendisse potenti. Phasellus bibendum et urna eget auctor.</p>
-            <p>Integer in sodales quam, at elementum libero. Curabitur tincidunt, velit eget posuere efficitur, lectus quam convallis nunc, nec laoreet tortor nulla sed risus. Donec non consectetur leo. Etiam in libero nisl. Integer at ligula a nibh luctus congue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec consequat turpis sit amet mauris accumsan facilisis. In euismod ultrices dui, ut ultricies enim sollicitudin et.</p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at justo vel nulla feugiat eleifend ut eu nunc. Morbi id interdum magna. Fusce in purus et nunc malesuada elementum. Pellentesque ut diam auctor, malesuada ipsum id, tempus lectus. Aliquam nec purus a urna aliquam feugiat. Nulla auctor orci ut nibh commodo pharetra. Mauris ut viverra lectus. Donec ut sapien ut dolor malesuada hendrerit nec sit amet nisl. Curabitur vestibulum odio vitae arcu fringilla, nec vehicula tellus bibendum.</p>
-            <p>Nulla facilisi. Maecenas vel pulvinar nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed id risus dui. Fusce ut nunc vel odio lobortis lacinia vel eu ligula. Proin finibus lacus sit amet tristique consectetur. Vivamus sit amet tincidunt lorem, eget convallis felis. Donec lacinia convallis mauris ac pellentesque. Donec eu tellus non mauris scelerisque vehicula. Vivamus non dui tellus. Duis tincidunt eleifend ex, vel feugiat leo ultrices non.</p>
-            <p>Nulla facilisi. Vestibulum et purus consectetur, ultricies magna nec, dignissim risus. Donec scelerisque, arcu at ultricies placerat, risus turpis consequat nisi, nec commodo lectus turpis id tortor. Cras vitae turpis eget felis malesuada rutrum ac et nisi. Pellentesque feugiat erat sed est ultricies rhoncus. Ut a sollicitudin velit. Suspendisse potenti. Phasellus bibendum et urna eget auctor.</p>
-        </section>
-    </main>
-    <footer>
-        <p>Contato: email@example.com | Telefone: (123) 456-7890</p>
-        <p><b>About Farm Labor</b></p>
-    </footer>
+    <div>Teachable Machine Image Model</div>
+<button type="button" onclick="init()">Start</button>
+<div id="webcam-container"></div>
+<div id="label-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "./my_model/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+    }
+</script>
+
 </body>
 </html>
