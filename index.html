@@ -55,13 +55,13 @@
     async function toggleCamera() {
         const videoTracks = webcam.stream.getVideoTracks();
         videoTracks.forEach(track => track.stop());
-        
+
         const constraints = {
             video: {
                 facingMode: (webcam.facingMode === 'user') ? 'environment' : 'user'
             }
         };
-        
+
         const newStream = await navigator.mediaDevices.getUserMedia(constraints);
         webcam.stream = newStream;
         webcam.video.srcObject = newStream;
