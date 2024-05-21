@@ -79,6 +79,9 @@
 			button:hover {
 			background: #c3562d;
 			}
+			/* Escala da terceira div */
+		        .larger-div {
+		            transform: scaleY(1.15);
 			@media (max-width: 600px) {
 			.central-container {
 			padding: 2em;
@@ -109,7 +112,8 @@
 			</div>
 			<div class="central-container" id="webcam-container">
 			</div>
-			<div class="central-container" id="label-container">
+			<!-- Terceira div com classe "larger-div" -->
+        		<div class="central-container larger-div">
 			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
