@@ -1,56 +1,30 @@
-<div>Teachable Machine Image Model</div>
-<button type="button" onclick="toggleCamera()">Toggle Camera</button>
-<div id="webcam-container"></div>
-<div id="label-container"></div>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-<script type="text/javascript">
-    const URL = "https://teachablemachine.withgoogle.com/models/6v82zlLtW/";
-
-    let model, webcam, labelContainer, maxPredictions;
-    let currentCamera = 0; // 0 for front camera, 1 for rear camera
-
-    async function init() {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
-
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-
-        const flip = true;
-        webcam = new tmImage.Webcam(200, 200, flip);
-        await webcam.setup();
-        await webcam.play();
-        window.requestAnimationFrame(loop);
-
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
-        labelContainer = document.getElementById("label-container");
-        for (let i = 0; i < maxPredictions; i++) {
-            labelContainer.appendChild(document.createElement("div"));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Access</title>
+</head>
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <script>
+        async function startCamera() {
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: { ideal: "environment" }  // "environment" para a câmera traseira
+                    }
+                };
+                
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoElement = document.getElementById('video');
+                videoElement.srcObject = stream;
+            } catch (err) {
+                console.error("Erro ao acessar a câmera: ", err);
+            }
         }
-    }
 
-    async function loop() {
-        webcam.update();
-        await predict();
-        window.requestAnimationFrame(loop);
-    }
-
-    async function predict() {
-        const prediction = await model.predict(webcam.canvas);
-        for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction =
-                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
-        }
-    }
-
-    function toggleCamera() {
-        currentCamera = 1 - currentCamera; // Toggle between 0 and 1
-        webcam.stop();
-        webcam = new tmImage.Webcam(200, 200, currentCamera === 0);
-        webcam.setup().then(() => webcam.play());
-    }
-    
-    init(); // Start the process
-</script>
+        startCamera();
+    </script>
+</body>
+</html>
