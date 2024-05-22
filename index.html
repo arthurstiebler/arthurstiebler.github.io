@@ -35,7 +35,7 @@
             width: 90%;
             max-width: 500px;
             background-color: #00748b;
-            padding: 20px;
+            padding: 5px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -108,7 +108,7 @@
             maxPredictions = model.getTotalClasses();
 
             // Convenience function to setup a webcam
-            webcam = new tmImage.Webcam(400, 400); // width, height
+            webcam = new tmImage.Webcam(300, 300); // width, height
             await webcam.setup({ facingMode: "environment" }); // request access to the webcam
             await webcam.play();
             window.requestAnimationFrame(loop);
