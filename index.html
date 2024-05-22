@@ -107,12 +107,13 @@
 		</div>
 		<div class="main-content">
 			<div class="central-container">
+				<h1>Olá!</h1>
+				<p>Para iniciar, clique no botão abaixo e libere acesso à câmera, caso necessário.</p>
 				<button id="actionButton1" type="button" onclick="init()">Iniciar</button>
-			</div>
-			<div class="central-container" id="webcam-container">
-			</div>
-			<!-- Terceira div com classe "larger-div" -->
-        		<div class="central-container larger-div" id="label-container">
+				<div id="webcam-container">
+				</div>
+	        		<div id="label-container">
+				</div>
 			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -139,7 +140,7 @@
 			    maxPredictions = model.getTotalClasses();
 			
 			    // Convenience function to setup a webcam
-			    webcam = new tmImage.Webcam(300, 300); // width, height
+			    webcam = new tmImage.Webcam(400, 400); // width, height
 			    await webcam.setup({ facingMode: "environment" }); // request access to the webcam
 			    await webcam.play();
 			    window.requestAnimationFrame(loop);
