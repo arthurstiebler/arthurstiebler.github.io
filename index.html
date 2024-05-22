@@ -18,7 +18,7 @@
 			background: #00748b;
 			color: #ffffff;
 			height: 100vh;
-			overflow: auto;
+			overflow: hidden;
 			}
 			.header {
 			width: 100%;
@@ -40,13 +40,12 @@
 			height: 50px;
 			}
 			.main-content {
-			margin-top: 100px; /* espaço aumentado para a faixa fixa */
+			margin-top: 80px; /* espaço para a faixa fixa */
 			display: flex;
-			flex-direction: column;
+			justify-content: center;
 			align-items: center;
+			flex-grow: 1;
 			width: 100%;
-			gap: 2em;
-			padding-bottom: 2em;
 			}
 			.central-container {
 			background: #ffffff;
@@ -55,8 +54,6 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 			text-align: center;
-			width: 90%;
-			max-width: 600px;
 			}
 			.central-container h1 {
 			margin-bottom: 1em;
@@ -79,9 +76,6 @@
 			button:hover {
 			background: #c3562d;
 			}
-			/* Escala da terceira div */
-		        .larger-div {
-		            transform: scaleY(1.15);
 			@media (max-width: 600px) {
 			.central-container {
 			padding: 2em;
@@ -108,12 +102,12 @@
 		<div class="main-content">
 			<div class="central-container">
 				<h1>Olá!</h1>
-				<p>Para iniciar, clique no botão abaixo e libere acesso à câmera, caso necessário.</p>
-				<button id="actionButton1" type="button" onclick="init()">Iniciar</button>
-				<div id="webcam-container">
-				</div>
-	        		<div id="label-container">
-				</div>
+				<p>Clique no botão abaixo para inicar a verificação.</p>
+				<button id="actionButton" type="button" onclick="init()">Ligar câmera</button>
+			</div id="webcam-container">
+			<div>
+			</div id="label-container">
+			<div>
 			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
