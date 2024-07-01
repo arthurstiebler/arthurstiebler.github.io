@@ -72,20 +72,10 @@
 </head>
 
 <body>
-    <script>
-    // Exemplo de requisição utilizando fetch API
-fetch('https://api.timezonedb.com/v2.1/get-time-zone?key=4M3DNGJHS0B6&by=zone&zone=America/Sao_Paulo&fields=zoneName,formatted&format=json')
-  .then(response => response.json())
-  .then(data => {
-    // Manipulando os dados para incluir no objeto "Data"
-    const responseData = {
-      Data: data  // Aqui você pode ajustar de acordo com a estrutura específica que deseja
-    };
-
-    // Agora você pode utilizar responseData como o payload desejado
-    console.log(responseData);
-  })
-  .catch(error => console.error('Erro ao obter os dados:', error));
-</script>
+    <div class="header">
+        <a href="https://www.multmotores.com.br/" target="_blank">
+            <img src="https://www.multmotores.com.br/imagens/logo-multmotores.png" alt="Logo Mult Motores">
+        </a>
+    </div>
 </body>
 </html>
