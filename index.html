@@ -73,25 +73,19 @@
 
 <body>
     <script>
-        (function (o, c, t, a, d, e, s, k) {
-          o.octadesk = o.octadesk || {};
-          o.octadesk.chatOptions = {
-            subDomain: a,
-            showButton: d,
-            openOnMessage: e,
-            hide: s
-          };
-          var bd = c.getElementsByTagName("body")[0];
-          var sc = c.createElement("script");
-          sc.async = 1;
-          sc.src = t;
-          bd.appendChild(sc);
-        })(window, document, 'https://cdn.octadesk.com/embed.js', 'o188304-bdc',  'true', 'true', 'false');
-      </script>
-    <div class="header">
-        <a href="https://www.multmotores.com.br/" target="_blank">
-            <img src="https://www.multmotores.com.br/imagens/logo-multmotores.png" alt="Logo Mult Motores">
-        </a>
-    </div>
+    // Exemplo de requisição utilizando fetch API
+fetch('https://api.timezonedb.com/v2.1/get-time-zone?key=4M3DNGJHS0B6&by=zone&zone=America/Sao_Paulo&fields=zoneName,formatted&format=json')
+  .then(response => response.json())
+  .then(data => {
+    // Manipulando os dados para incluir no objeto "Data"
+    const responseData = {
+      Data: data  // Aqui você pode ajustar de acordo com a estrutura específica que deseja
+    };
+
+    // Agora você pode utilizar responseData como o payload desejado
+    console.log(responseData);
+  })
+  .catch(error => console.error('Erro ao obter os dados:', error));
+</script>
 </body>
 </html>
