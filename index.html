@@ -201,7 +201,7 @@
 			    const { acordes: acordesDoGrau, relativa } = acordes[modoAtual][tonalidade];
 			    const graus = ["1", "2", "3", "4", "5", "6", "7"];
 			    
-			    document.getElementById("outputTitle").innerHTML = `<h3>Acordes para a tonalidade <span class="tonalidade">${tonalidade} ${modoAtual}</span>:</h3>`;
+			    document.getElementById("outputTitle").innerHTML = `<h3>Acordes para a tonalidade <span class="tonalidade">${tonalidade} ${modoAtual}</span> natual:</h3>`;
 			    let resultado = "";
 			    acordesDoGrau.forEach((acorde, index) => {
 			        const isRelativo = acorde === relativa ? "relativo" : "";
