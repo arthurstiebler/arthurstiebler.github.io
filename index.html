@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MacBook Pro 2016 - Em Excelente Estado</title>
+  <!-- Incluindo o link para o Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* Reset e Fonte */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a1a;
+      color: #ffffff;
+      line-height: 1.7;
+      padding-top: 100px; /* Espaço para o header fixo */
+    }
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Header Fixo */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      background: rgba(10, 10, 26, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 1200px;
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s ease;
+    }
+    /* Header menor ao rolar */
+    header.scrolled {
+      padding: 10px 0;
+      margin: 10px auto;
+      width: 95%;
+      border-radius: 10px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4a00e0;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: font-size 0.4s ease;
+    }
+    header.scrolled .logo {
+      font-size: 1.2rem;
+    }
+    .logo i {
+      color: #4a00e0;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s, font-size 0.4s ease;
+    }
+    header.scrolled nav a {
+      font-size: 0.8rem;
+    }
+    nav a:hover {
+      color: #6c5ce7;
+    }
+    .btn {
+      padding: 10px 25px;
+      background: linear-gradient(90deg, #4a00e0, #6c5ce7);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    header.scrolled .btn {
+      padding: 8px 20px;
+      font-size: 0.9rem;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(74, 0, 224, 0.3);
+    }
+    /* Hero */
+    .hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 0;
+      background: url('https://via.placeholder.com/1500x800/0a0a1a/1a1a2a?text=MacBook+Pro+2016') no-repeat center center;
+      background-size: cover;
+      color: white;
+      position: relative;
+      overflow: hidden;
+	  gap: 50px;
+	  
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+    .hero-content {
+      z-index: 2;
+      max-width: 600px;
+	  text-align: center;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #ddd;
+    }
+    .hero img {
+      width: 400px;
+      height: 400px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 2px solid #6c5ce7;
+      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+      z-index: 2;
+    }
+
+    /* Carrossel */
+    .carousel {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      margin: 50px auto;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .carousel-inner {
+      display: flex;
+      transition: transform 0.5s ease;
+      height: 500px;
+    }
+    .carousel-item {
+      min-width: 100%;
+      height: 500px;
+      object-fit: cover;
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+    }
+    .carousel-btn {
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: background 0.3s;
+    }
+    .carousel-btn:hover {
+      background: #6c5ce7;
+    }
+    .carousel-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .indicator.active {
+      background: #6c5ce7;
+    }
+    /* Section */
+    section {
+      padding: 80px 0;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      color: #fff;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 30px;
+    }
+    .spec-card {
+      background: rgba(20, 20, 35, 0.8);
+      border-radius: 15px;
+      padding: 20px;
+      transition: transform 0.3s ease;
+      border: 1px solid #1a1a2a;
+    }
+    .spec-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(74, 0, 224, 0.2);
+    }
+    .spec-card i {
+      font-size: 2rem;
+      color: #6c5ce7;
+      margin-bottom: 15px;
+    }
+    .spec-card h3 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .spec-card p {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+    /* Histórico */
+    .history {
+      background: linear-gradient(135deg, #0a0a1a, #1a1a2a);
+      padding: 80px 0;
+      text-align: left;
+    }
+    .history-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .history-content h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .history-content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .history-content li {
+      margin-bottom: 15px;
+      padding-left: 30px;
+      position: relative;
+    }
+    .history-content li:before {
+      content: "•";
+      color: #6c5ce7;
+      font-size: 1.5rem;
+      position: absolute;
+      left: 0;
+      top: -5px;
+    }
+    .history-content h3 {
+      color: #6c5ce7;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    .history-content p {
+      margin-bottom: 10px;
+    }
+    /* Highlights */
+    .highlights {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 80px 0;
+      text-align: left;
+    }
+    .highlights-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .highlights-content h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .highlights-content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .highlights-content li {
+      margin-bottom: 15px;
+      padding-left: 30px;
+      position: relative;
+    }
+    .highlights-content li:before {
+      content: "✓";
+      color: #6c5ce7;
+      font-size: 1.2rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    /* Price Section */
+    .price-section {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 20px;
+      padding: 60px 40px;
+      text-align: left;
+      margin: 50px auto;
+      max-width: 900px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    .price-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: linear-gradient(45deg, #00bfff, #0077ff);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .price-section .content {
+      position: relative;
+      z-index: 1;
+      padding-right: 40px;
+    }
+    .price-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .price-section p {
+      margin-bottom: 2rem;
+      color: #ddd;
+    }
+    .price {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      margin: 1rem 0;
+    }
+    .price span {
+      font-size: 1.5rem;
+      color: #6c5ce7;
+    }
+    .small-note {
+      color: #6c5ce7;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .small-note a {
+      color: #6c5ce7;
+      text-decoration: underline;
+    }
+    /* FAQ */
+    .faq {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 80px 0;
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .faq-item {
+      background: rgba(20, 20, 35, 0.8);
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid #1a1a2a;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-align: left;
+    }
+    .faq-item:hover {
+      background: rgba(25, 25, 40, 0.9);
+    }
+    .faq-item h4 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 10px; /* Adiciona espaço entre título e resposta */
+    }
+    .faq-item p {
+      color: #ccc;
+      margin-top: 10px;
+      display: none; /* Inicialmente escondido */
+    }
+    /* Final CTA */
+    .cta {
+      background: linear-gradient(90deg, #00bfff, #6c5ce7);
+      padding: 80px 0;
+      text-align: center;
+      color: white;
+    }
+    .cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .cta p {
+      margin-bottom: 2rem;
+      color: #fff;
+      opacity: 0.9;
+    }
+    .cta .btn {
+      background: black;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+    }
+    .cta .btn:hover {
+      background: #111;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: #aaa;
+      font-size: 0.9rem;
+      border-top: 1px solid #1a1a2a;
+    }
+    /* Mobile Header */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 80px;
+      }
+      header {
+        padding: 15px 0;
+        margin: 10px auto;
+        width: 95%;
+        border-radius: 10px;
+      }
+      header.scrolled {
+        padding: 8px 0;
+        margin: 5px auto;
+      }
+      .logo {
+        font-size: 1.2rem;
+      }
+      nav ul {
+        gap: 1rem;
+      }
+      nav a {
+        font-size: 0.8rem;
+      }
+      .btn {
+        padding: 8px 18px;
+        font-size: 0.85rem;
+      }
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 0;
+      }
+      .hero-content {
+        margin-right: 0;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .hero img {
+        width: 280px;
+        height: 280px;
+      }
+      section {
+        padding: 60px 0;
+      }
+      section h2 {
+        font-size: 1.8rem;
+      }
+      .price {
+        font-size: 2.5rem;
+      }
+      .cta h2 {
+        font-size: 2rem;
+      }
+      .carousel {
+        height: 300px;
+      }
+      .carousel-inner {
+        height: 300px;
+      }
+      .carousel-item {
+        height: 300px;
+      }
+      .carousel-controls {
+        padding: 0 10px;
+      }
+      .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+      .carousel-indicators {
+        bottom: 15px;
+      }
+      .indicator {
+        width: 10px;
+        height: 10px;
+      }
+    }
+    @media (max-width: 480px) {
+      nav ul {
+        gap: 0.5rem;
+      }
+      .logo {
+        font-size: 1rem;
+      }
+      nav a {
+        font-size: 0.7rem;
+      }
+      .btn {
+        padding: 6px 15px;
+        font-size: 0.8rem;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .hero p {
+        font-size: 0.9rem;
+      }
+      .hero img {
+        width: 240px;
+        height: 240px;
+      }
+      section h2 {
+        font-size: 1.6rem;
+      }
+      .price {
+        font-size: 2rem;
+      }
+      .cta h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Fixo -->
+  <header>
+    <a href="#" class="logo"><i class="fas fa-laptop"></i> MacBook Pro</a>
+    <nav>
+      <ul>
+        <li><a href="#especificacoes">Especificações</a></li>
+        <li><a href="#historico">Histórico</a></li>
+        <li><a href="#destaques">Destaques</a></li>
+        <li><a href="#faq">Perguntas</a></li>
+      </ul>
+    </nav>
+    <a href="https://wa.me/5511910824082" target="_blank" class="btn">Comprar Agora</a>
+  </header>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>MacBook Pro 2016</h1>
+      <p>Em excelente estado, com performance impecável. Ideal para desenvolvimento, edição e produtividade.</p>
+      <a href="https://wa.me/5511910824082" target="_blank" class="btn">Comprar Agora →</a>
+    </div>
+    <img src="" alt="MacBook Pro 2016">
+  </section>
+  <!-- Carrossel de Imagens -->
+  <section id="imagens">
+    <div class="container">
+      <div class="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item">
+            <img src="">
+          </div>
+          <div class="carousel-item">
+            <img src="">
+          </div>
+          <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+		  <div class="carousel-item">
+            <img src="">
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" onclick="prevSlide()">&#10094;</button>
+          <button class="carousel-btn" onclick="nextSlide()">&#10095;</button>
+        </div>
+        <div class="carousel-indicators">
+			<span class="indicator active" onclick="goToSlide(0)"></span>
+			<span class="indicator" onclick="goToSlide(1)"></span>
+			<span class="indicator" onclick="goToSlide(2)"></span>
+			<span class="indicator" onclick="goToSlide(3)"></span>
+			<span class="indicator" onclick="goToSlide(4)"></span>
+			<span class="indicator" onclick="goToSlide(5)"></span>
+			<span class="indicator" onclick="goToSlide(6)"></span>
+			<span class="indicator" onclick="goToSlide(7)"></span>
+			<span class="indicator" onclick="goToSlide(8)"></span>
+			<span class="indicator" onclick="goToSlide(9)"></span>
+			<span class="indicator" onclick="goToSlide(10)"></span>
+			<span class="indicator" onclick="goToSlide(11)"></span>
+			<span class="indicator" onclick="goToSlide(12)"></span>
+			<span class="indicator" onclick="goToSlide(13)"></span>
+			<span class="indicator" onclick="goToSlide(14)"></span>
+			<span class="indicator" onclick="goToSlide(15)"></span>
+			<span class="indicator" onclick="goToSlide(16)"></span>
+			<span class="indicator" onclick="goToSlide(17)"></span>
+			<span class="indicator" onclick="goToSlide(18)"></span>
+			<span class="indicator" onclick="goToSlide(19)"></span>
+			<span class="indicator" onclick="goToSlide(20)"></span>
+			<span class="indicator" onclick="goToSlide(21)"></span>
+			<span class="indicator" onclick="goToSlide(22)"></span>
+			<span class="indicator" onclick="goToSlide(23)"></span>
+			<span class="indicator" onclick="goToSlide(24)"></span>
+        </div>
+      </div>
+	  <p style="font-size: 12px">*A tela está com uma película protetora; carregador e cabo originais (apenas a ponta da tomada foi trocada);<br> todas portas USB funcionando; acompanha case de proteção; TouchBar, teclado, câmera, microfone, Wi-Fi e Bluetooth 100% funcionais.<p>
+    </div>
+  </section>
+  <!-- Especificações -->
+  <section id="especificacoes">
+    <div class="container">
+      <h2>Especificações Técnicas</h2>
+      <div class="specs-grid">
+        <div class="spec-card">
+          <i class="fas fa-microchip"></i>
+          <h3>Processador</h3>
+          <p>Intel Core i7, 2.6 GHz (Turbo até 3.5 GHz)</p>
+        </div>
+        <div class="spec-card">
+          <i class="fas fa-memory"></i>
+          <h3>Memória RAM</h3>
+          <p>16 GB LPDDR3, 2133 MHz</p>
+        </div>
+        <div class="spec-card">
+          <i class="fas fa-hdd"></i>
+          <h3>Armazenamento</h3>
+          <p>SSD de 512 GB PCIe</p>
+        </div>
+        <div class="spec-card">
+          <i class="fas fa-keyboard"></i>
+          <h3>Tela</h3>
+          <p>Retina 15,4", 2880x1800 pixels</p>
+        </div>
+        <div class="spec-card">
+          <i class="fas fa-battery-full"></i>
+          <h3>Bateria</h3>
+          <p>Funciona por mais de 8 horas*</p>
+		  <p style="font-size: 10px">*Trocada em 2021 pela Apple. Menos de 1.000 ciclos.</p>
+        </div>
+        <div class="spec-card">
+          <i class="fas fa-wrench"></i>
+          <h3>Condição</h3>
+          <p>Bem conservado, totalmente funcional*</p>
+		  <p style="font-size: 10px">*Marcas de uso mínimas para um computador de aprox. 10 anos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Histórico -->
+  <section id="historico" class="history">
+    <div class="container">
+      <div class="history-content">
+        <h2>📌 Histórico do equipamento</h2>
+        <ul>
+          <li><strong>2018 - Fevereiro:</strong> Aquisição pelo primeiro proprietário, que pretendia utilizá-lo para edições de vídeo em tempo real em casamentos. Como não deu sequência a esse projeto, decidiu vender.</li>
+          <li><strong>2018 - Setembro:</strong> Aquisição pelo segundo proprietário (atual). Desde então, o MacBook foi utilizado de forma responsável, sempre atendendo plenamente às necessidades de performance. Trata-se de uma máquina de alto desempenho, robusta e confiável.</li>
+          <li><strong>2020 - Outubro:</strong> Substituição do display através de programa oficial de qualidade da Apple.</li>
+          <li><strong>2021 - Junho:</strong> Substituição do gabinete superior através de programa oficial de qualidade da Apple, devido a teclas que se repetiam inesperadamente. Essa troca também contemplou a substituição da bateria, já que é integrada ao gabinete superior. (Ou seja, desde 2021 o computador conta com uma bateria nova).</li>
+          <li><strong>2025:</strong> Disponível para um novo proprietário, pois adquiri um MacBook mais atual. Nos últimos dias, o equipamento passou por uma limpeza interna de hardware para garantir ainda mais longevidade e desempenho.</li>
+        </ul>
+        <h3>👤 Sobre a posse:</h3>
+        <p>Apesar de ter tido um primeiro dono por poucos meses, o MacBook esteve sob minha posse desde setembro de 2018 até hoje. Ou seja, praticamente teve um único dono (e muito responsável) em todo o período de uso.</p>
+      </div>
+    </div>
+  </section>
+  <!-- Destaques -->
+  <section id="destaques" class="highlights">
+    <div class="container">
+      <div class="highlights-content">
+        <h2>💻 Destaques do produto:</h2>
+        <ul>
+          <li>Equipamento de alto desempenho e excelente durabilidade</li>
+          <li>Manutenções realizadas em programas oficiais da Apple</li>
+          <li>Display e gabinete superior substituídos pela própria Apple</li>
+          <li>Bateria substituída em 2021 (original Apple)</li>
+          <li>Bem conservado e com histórico de uso transparente</li>
+          <li>Ideal para quem busca confiabilidade em tarefas profissionais ou pessoais</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <!-- Preço -->
+  <section class="price-section">
+    <div class="container">
+      <div class="content">
+        <h2>Este é o SEU momento de ter um MacBook poderoso!</h2>
+        <p>Perfeito para engenheiros de áudio, programadores, designers, estudantes e profissionais que precisam de uma máquina de alto desempenho.</p>
+        <div class="price">R$ 3.900,00</div>
+        <div class="small-note">* Menos que o preço de um <a href="https://www.apple.com/br/shop/buy-iphone/iphone-16e" target="_blank">iPhone 16e novo!</a> (E nem é meme)</div>
+        <a href="https://wa.me/5511910824082" target="_blank" class="btn">Comprar Agora →</a>
+      </div>
+    </div>
+  </section>
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <h2>Perguntas que ninguém perguntou</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>Por que está vendendo?</h4>
+          <p>Pude comprar um novo 🙌 (que quem sabe no futuro poderá ser seu também 👀)</p>
+        </div>
+        <div class="faq-item">
+          <h4>Como vou receber o computador?</h4>
+          <p>Envio por correios ou encontro em lugar público, região metropolitana de SP📍</p>
+        </div>
+		<div class="faq-item">
+          <h4>Mas e o pagamento?</h4>
+          <p>Pode ser por Pix ou link de pagamento, este porém com juros 😭.</p>
+        </div>
+        <div class="faq-item">
+          <h4>O computador é usado?</h4>
+          <p>Sim, mas em excelente estado. Até fiz esse site pra mostrar o quão bão é! 😁👍</p>
+        </div>
+		<div class="faq-item">
+          <h4>E o que você não contou?</h4>
+          <p>Nada! nossa história foi linda 🥲. Sem quedas ou derramamento de líquidos, pode confiar.</p>
+        </div>
+		<div class="faq-item">
+          <h4>Precisa clicar nesse card?</h4>
+          <p>Não, criei ele apenas para ficar bonito, com um número par de cards. <del>toc toc toc 😜</del></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- CTA Final -->
+  <section class="cta">
+    <div class="container">
+      <h2>Pronto para ter um MacBook Pro?</h2>
+      <p>Seja mais produtivo com um dos melhores notebooks do mercado.</p>
+      <a href="https://wa.me/5511910824082" target="_blank" class="btn">Comprar Agora →</a>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Copyright © 2025 | MacBook Pro 2016</p>
+      <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
+	  <p>Esse footer aqui é só pra inglês ver, foi a IA que fez.</p>
+    </div>
+  </footer>
+  <!-- JavaScript para Carrossel e FAQ -->
+  <script>
+    // --- JavaScript para o Carrossel ---
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    const indicators = document.querySelectorAll('.indicator');
+
+    function showSlide(n) {
+      // Esconde todas as slides
+      slides.forEach(slide => slide.style.display = 'none');
+      // Remove a classe 'active' de todos os indicadores
+      indicators.forEach(ind => ind.classList.remove('active'));
+      
+      // Mostra a slide selecionada
+      slides[n].style.display = 'block';
+      // Adiciona a classe 'active' ao indicador correspondente
+      indicators[n].classList.add('active');
+      
+      currentSlide = n;
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function goToSlide(n) {
+      showSlide(n);
+    }
+
+    // Inicializa o carrossel mostrando a primeira slide
+    showSlide(currentSlide);
+
+    // Auto-avanço a cada 5 segundos (opcional)
+    // setInterval(nextSlide, 5000);
+
+    // --- JavaScript para o FAQ ---
+    // Seleciona todos os itens do FAQ
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    // Adiciona um evento de clique a cada item
+    faqItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Seleciona o parágrafo (resposta) dentro do item clicado
+        const answer = item.querySelector('p');
+        
+        // Verifica se a resposta está visível
+        if (answer.style.display === 'block') {
+            // Se estiver visível, esconde
+            answer.style.display = 'none';
+        } else {
+            // Se estiver escondida, mostra
+            answer.style.display = 'block';
+        }
+      });
+    });
+
+    // --- JavaScript para Header Dinâmico ---
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
