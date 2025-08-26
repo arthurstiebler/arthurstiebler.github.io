@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modos e Campos Harmônicos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px auto;
+            background-color: #f0f8ff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .output, .chords {
+            margin-top: 20px;
+        }
+        .output h3, .chords h3 {
+            margin-bottom: 10px;
+            color: #2a7bf6;
+        }
+        .output div, .chords div {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .output div p, .chords div p {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Escolha o Modo e Tom</h1>
+    <div>
+        <label for="tone">Tom:</label>
+        <select id="tone" onchange="updateDisplay()">
+            <option value="C">C</option>
+            <option value="C#">C#</option>
+            <option value="D">D</option>
+            <option value="D#">D#</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="F#">F#</option>
+            <option value="G">G</option>
+            <option value="G#">G#</option>
+            <option value="A">A</option>
+            <option value="A#">A#</option>
+            <option value="B">B</option>
+        </select>
+        <label for="mode">Modo:</label>
+        <select id="mode" onchange="updateDisplay()">
+            <option value="jônio">Jônio</option>
+            <option value="dórico">Dórico</option>
+            <option value="frígio">Frígio</option>
+            <option value="lídio">Lídio</option>
+            <option value="mixolídio">Mixolídio</option>
+            <option value="eólio">Eólio</option>
+            <option value="lócrio">Lócrio</option>
+        </select>
+    </div>
+    <div class="output">
+        <h3>Notas do Modo</h3>
+        <div id="notes"></div>
+    </div>
+    <div class="chords">
+        <h3>Acordes do Campo Harmônico</h3>
+        <div id="chords"></div>
+    </div>
+    <script>
+        const modes = {
+            jônio: [0, 2, 4, 5, 7, 9, 11],
+            dórico: [0, 2, 3, 5, 7, 9, 10],
+            frígio: [0, 1, 3, 5, 7, 8, 10],
+            lídio: [0, 2, 4, 6, 7, 9, 11],
+            mixolídio: [0, 2, 4, 5, 7, 9, 10],
+            eólio: [0, 2, 3, 5, 7, 8, 10],
+            lócrito: [0, 1, 3, 5, 6, 8, 10]
+        };
+
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+        function calculateMode(baseNote, mode) {
+            const baseIndex = notes.indexOf(baseNote);
+            return modes[mode].map(interval => notes[(baseIndex + interval) % 12]);
+        }
+
+        function updateDisplay() {
+            const tone = document.getElementById("tone").value;
+            const mode = document.getElementById("mode").value;
+
+            const modeNotes = calculateMode(tone, mode);
+
+            const notesHTML = modeNotes.map(note => `<p>${note}</p>`).join('');
+            document.getElementById("notes").innerHTML = notesHTML;
+
+            const chords = modeNotes.map((note, index) => {
+                const suffix = [0, 3, 4].includes(index) ? '' : 'm';
+                return `<p>${note}${suffix}</p>`;
+            }).join('');
+
+            document.getElementById("chords").innerHTML = chords;
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
